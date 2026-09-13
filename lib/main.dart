@@ -23,55 +23,7 @@ class AlQaysarApp extends StatelessWidget {
           secondary: Colors.amberAccent,
         ),
       ),
-      home: const SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.flight_takeoff, size: 80, color: Colors.amber),
-            const SizedBox(height: 16),
-            const Text(
-              'القيصر للسفريات والسياحة',
-              style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'وتخليص جميع المعاملات',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-            ),
-            const SizedBox(height: 30),
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
-            ),
-          ],
-        ),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
@@ -280,7 +232,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// شاشة بحث النقل البري
 class TransportSearchScreen extends StatefulWidget {
   const TransportSearchScreen({Key? key}) : super(key: key);
 
@@ -358,7 +309,6 @@ class _TransportSearchScreenState extends State<TransportSearchScreen> {
   }
 }
 
-// شاشة بحث الطيران
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({Key? key}) : super(key: key);
 
@@ -430,7 +380,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   }
 }
 
-// شاشة الموافقات الأمنية
 class SecurityApprovalsScreen extends StatelessWidget {
   const SecurityApprovalsScreen({Key? key}) : super(key: key);
 
@@ -460,7 +409,6 @@ class SecurityApprovalsScreen extends StatelessWidget {
   }
 }
 
-// شاشة التأشيرات
 class VisasScreen extends StatelessWidget {
   const VisasScreen({Key? key}) : super(key: key);
 
