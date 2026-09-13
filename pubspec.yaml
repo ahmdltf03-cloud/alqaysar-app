@@ -1,14 +1,15 @@
 name: alqaysar_app
-description: Al-Qaysar Travels & Tourism Application
+description: Al-Qaysar Travel and Tourism Application
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:
@@ -17,5 +18,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
