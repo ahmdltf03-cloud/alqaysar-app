@@ -54,27 +54,16 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/logo.png',
-              width: 240,
-              height: 240,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return Column(
-                  children: const [
-                    Icon(Icons.flight_takeoff, size: 80, color: Colors.amber),
-                    SizedBox(height: 16),
-                    Text(
-                      'القيصر للسفريات والسياحة',
-                      style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'وتخليص جميع المعاملات',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                  ],
-                );
-              },
+            const Icon(Icons.flight_takeoff, size: 80, color: Colors.amber),
+            const SizedBox(height: 16),
+            const Text(
+              'القيصر للسفريات والسياحة',
+              style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'وتخليص جميع المعاملات',
+              style: TextStyle(color: Colors.white70, fontSize: 16),
             ),
             const SizedBox(height: 30),
             const CircularProgressIndicator(
@@ -90,13 +79,66 @@ class _SplashScreenState extends State<SplashScreen> {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  void _showContactOptions(BuildContext context, String serviceName) {
+    final String mainPhoneNumber = '967770169070';
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                serviceName,
+                style: const TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      final msg = Uri.encodeComponent('السلام عليكم، أرغب بالاستفسار/الحجز عن: "$serviceName". (قادم من تطبيق القيصر)');
+                      final url = Uri.parse('https://wa.me/$mainPhoneNumber?text=$msg');
+                      if (await canLaunchUrl(url)) await launchUrl(url, mode: LaunchMode.externalApplication);
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
+                    icon: const Icon(Icons.chat),
+                    label: const Text('عبر واتساب'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      final url = Uri(scheme: 'tel', path: '770169070');
+                      if (await canLaunchUrl(url)) await launchUrl(url);
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.amber, foregroundColor: Colors.black),
+                    icon: const Icon(Icons.phone),
+                    label: const Text('اتصال مباشر'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'القيصر للسفريات والسياحة - الإدارة العامة',
-          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 15),
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
@@ -121,7 +163,7 @@ class HomeScreen extends StatelessWidget {
             'حجز تذاكر الطيران المحلية والدولية',
             Icons.flight,
             [
-              'مطارات اليمن (مطار عدن، مطار الريان، مطار صنعاء وغيرها)',
+              'مطارات اليمن (مطار عدن، مطار الريان، مطار سيئون، مطار صنعاء)',
               'مطار مسقط، مطار دبي، ومطارات العالم المتاحة',
               'بحث حسب التاريخ واختيار وجهات السفر'
             ],
@@ -212,7 +254,7 @@ class HomeScreen extends StatelessWidget {
           ...details.map((detail) => ListTile(
             title: Text(detail, style: const TextStyle(color: Colors.grey, fontSize: 13)),
             leading: const Icon(Icons.arrow_forward_ios, color: Colors.amber, size: 10),
-          )).toList(),
+          )),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: ElevatedButton.icon(
@@ -236,62 +278,9 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  void _showContactOptions(BuildContext context, String serviceName) {
-    final String mainPhoneNumber = '967770169070';
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF1E1E1E),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                serviceName,
-                style: const TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      final msg = Uri.encodeComponent('السلام عليكم، أرغب بالاستفسار/الحجز عن: "$serviceName". (قادم من تطبيق القيصر)');
-                      final url = Uri.parse('https://wa.me/$mainPhoneNumber?text=$msg');
-                      if (await canLaunchUrl(url)) await launchUrl(url, mode: LaunchMode.externalApplication);
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
-                    icon: const Icon(Icons.chat),
-                    label: const Text('عبر واتساب'),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      final url = Uri(scheme: 'tel', path: '770169070');
-                      if (await canLaunchUrl(url)) await launchUrl(url);
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.amber, foregroundColor: Colors.black),
-                    icon: const Icon(Icons.phone),
-                    label: const Text('اتصال مباشر'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
 
-// شاشة بحث النقل البري والخطوط الرئيسية
+// شاشة بحث النقل البري
 class TransportSearchScreen extends StatefulWidget {
   const TransportSearchScreen({Key? key}) : super(key: key);
 
@@ -340,6 +329,7 @@ class _TransportSearchScreenState extends State<TransportSearchScreen> {
             ),
             const SizedBox(height: 20),
             Text('تاريخ الرحلة: ${selectedDate.toLocal().toString().split(' ')[0]}', style: const TextStyle(color: Colors.white)),
+            const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
               onPressed: () async {
@@ -382,7 +372,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   DateTime selectedDate = DateTime.now();
 
   final List<String> yemeniAirports = ['مطار عدن الدولي', 'مطار الريان (المكلا)', 'مطار سيئون الدولي', 'مطار صنعاء الدولي'];
-  final List<String> globalDestinations = ['الرياض (السعودية)', 'جدة (السعودية)', 'مجمع مسقط (عمان)', 'دبي (الإمارات)', 'القاهرة (مصر)', 'عمّان (الأردن)'];
+  final List<String> globalDestinations = ['الرياض (السعودية)', 'جدة (السعودية)', 'مسقط (عمان)', 'دبي (الإمارات)', 'القاهرة (مصر)', 'عمّان (الأردن)'];
 
   @override
   Widget build(BuildContext context) {
@@ -411,6 +401,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
             ),
             const SizedBox(height: 20),
             Text('تاريخ السفر: ${selectedDate.toLocal().toString().split(' ')[0]}', style: const TextStyle(color: Colors.white)),
+            const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
               onPressed: () async {
