@@ -11,7 +11,7 @@ class AlQaysarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'القيصر للسفريات والسياحة وتخليص جميع المعاملات',
+      title: 'القيصر للسفريات والسياحة',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.amber,
@@ -29,30 +29,44 @@ class AlQaysarApp extends StatelessWidget {
   }
 }
 
+// شاشة الترحيب الفخمة
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String serviceName) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في الاستفسار عن خدمة: $serviceName");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
+              const SizedBox(height: 20),
+              // شعار القيصر (رمز تعبيري فخم يعبر عن الشعار)
               Container(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.amber, width: 2),
-                  color: Colors.black54,
+                  border: Border.all(color: Colors.amber, width: 3),
+                  color: Colors.black,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.amber.withOpacity(0.3),
+                      blurRadius: 15,
+                      spreadRadius: 2,
+                    )
+                  ],
                 ),
                 child: const Icon(
-                  Icons.airplanemode_active,
-                  size: 70,
+                  Icons.verified,
+                  size: 65,
                   color: Colors.amber,
                 ),
               ),
@@ -66,52 +80,70 @@ class WelcomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'مرحباً بكم في عالم السفريات وعالم السياحة وتخليص المعاملات وخدمات الحج والعمرة المتكاملة في القيصر للسفريات والسياحة وتخليص جميع المعاملات وخدمات الحج والعمرة.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  height: 1.5,
+              const SizedBox(height: 15),
+              // النص الترحيبي الرسمي
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                ),
+                child: const Text(
+                  'مرحباً بكم في عالم السفريات وعالم السياحة وتخليص المعاملات وخدمات الحج والعمرة المتكاملة في القيصر للسفريات والسياحة وتخليص جميع المعاملات وخدمات الحج والعمرة.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                    height: 1.6,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Row(
+              const SizedBox(height: 20),
+              // العنوان وأرقام التواصل في الواجهة الرئيسية لزيادة الثقة
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.phone, color: Colors.amber, size: 18),
-                  const SizedBox(width: 8),
-                  const Text('770169070 - 773606048',
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Icon(Icons.location_on, color: Colors.amber, size: 18),
+                  SizedBox(width: 5),
+                  Text('الجمهورية اليمنية - خدمات متكاملة',
+                      style: TextStyle(color: Colors.white, fontSize: 13)),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 8),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.phone_in_talk, color: Colors.amber, size: 18),
+                  SizedBox(width: 5),
+                  Text('770169070 - 773606048',
+                      style: TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              const SizedBox(height: 25),
               SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 52,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
+                      MaterialPageRoute(builder: (context) => const HomeScreen()),
                     );
                   },
                   child: const Text(
-                    'دخول إلى التطبيق والخدمات',
+                    'دخول إلى قائمة الخدمات الرئيسية',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -120,16 +152,13 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
+// الشاشة الرئيسية للتطبيق وقائمة الخدمات
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  Future<void> _makePhoneCall(String phoneNumber) async {
-    final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
-    await launchUrl(launchUri);
-  }
-
-  Future<void> _openWhatsApp(String phone) async {
-    final uri = Uri.parse("https://wa.me/$phone");
+  Future<void> _openWhatsApp(String serviceName) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في حجز أو الاستفسار عن خدمة: $serviceName");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
@@ -150,75 +179,72 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.amber.withOpacity(0.3)),
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    'خدمات الحج والعمرة والسفريات المتكاملة',
-                    style: TextStyle(
-                        color: Colors.amber,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+            // قسم الموافقات الأمنية المميز قبل المربعات الرئيسية
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecurityApprovalsScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF2C2200), Color(0xFF1E1E1E)],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'نحن نلبي كافة احتياجاتكم في السفر، حجز الرحلات البرية والجوية، وتخليص المعاملات الرسمية بكل موثوقية واحترافية.',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Divider(color: Colors.white24, height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton.icon(
-                        onPressed: () => _makePhoneCall('770169070'),
-                        icon: const Icon(Icons.phone, color: Colors.amber),
-                        label: const Text('770169070',
-                            style: TextStyle(color: Colors.white)),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.amber, width: 1.5),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.security, color: Colors.amber, size: 35),
+                    SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'قسم استخراج الموافقات الأمنية',
+                            style: TextStyle(color: Colors.amber, fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'اضغط هنا لمعرفة الدول التي تتطلب موافقات امنية (مثل مصر وغيرها) وطلبها فوراً.',
+                            style: TextStyle(color: Colors.white70, fontSize: 12),
+                          ),
+                        ],
                       ),
-                      TextButton.icon(
-                        onPressed: () => _makePhoneCall('773606048'),
-                        icon: const Icon(Icons.phone, color: Colors.amber),
-                        label: const Text('773606048',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                    Icon(Icons.arrow_forward_ios, color: Colors.amber, size: 16),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'أقسام الخدمات',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+              'أقسام الخدمات الشاملة',
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
+            // الشبكة الرئيسية للأقسام
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.2,
+              childAspectRatio: 1.15,
               children: [
                 ServiceCard(
-                  title: 'النقل البري والرحلات',
+                  title: 'النقل البري والسيارات',
                   icon: Icons.directions_bus,
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const BusBookingScreen()),
+                      MaterialPageRoute(builder: (context) => const BusBookingScreen()),
                     );
                   },
                 ),
@@ -228,25 +254,28 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const FlightsScreen()),
+                      MaterialPageRoute(builder: (context) => const FlightsScreen()),
                     );
                   },
                 ),
                 ServiceCard(
-                  title: 'تخليص المعاملات',
-                  icon: Icons.assignment,
+                  title: 'الجوازات والبطاقات',
+                  icon: Icons.badge,
                   onTap: () {
-                    _showInfoDialog(context, 'تخليص المعاملات',
-                        'نقوم بتخليص كافة المعاملات الرسمية والتأشيرات بدقة وسرعة عالية.');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PassportsScreen()),
+                    );
                   },
                 ),
                 ServiceCard(
-                  title: 'الحج والعمرة',
-                  icon: Icons.mosque,
+                  title: 'أقسام التأشيرات',
+                  icon: Icons.description,
                   onTap: () {
-                    _showInfoDialog(context, 'خدمات الحج والعمرة',
-                        'برامج متكاملة ومميزة لخدمة ضيوف الرحمن بكل راحة وطمأنينة.');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const VisasMainScreen()),
+                    );
                   },
                 ),
               ],
@@ -257,37 +286,18 @@ class HomeScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () => _openWhatsApp('967770169070'),
+                onPressed: () => _openWhatsApp('الخدمات العامة والاستفسار الشامل'),
                 icon: const Icon(Icons.chat),
-                label: const Text('تواصل معنا عبر واتساب',
-                    style: TextStyle(fontSize: 15)),
+                label: const Text('تواصل معنا مباشرة عبر واتساب', style: TextStyle(fontSize: 15)),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showInfoDialog(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: Text(title, style: const TextStyle(color: Colors.amber)),
-        content: Text(content, style: const TextStyle(color: Colors.white70)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('إغلاق', style: TextStyle(color: Colors.amber)),
-          ),
-        ],
       ),
     );
   }
@@ -298,12 +308,7 @@ class ServiceCard extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const ServiceCard(
-      {Key? key,
-      required this.title,
-      required this.icon,
-      required this.onTap})
-      : super(key: key);
+  const ServiceCard({Key? key, required this.title, required this.icon, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -324,10 +329,7 @@ class ServiceCard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -336,11 +338,26 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-class BusBookingScreen extends StatelessWidget {
+// 1. شاشة النقل البري والسيارات مع المحافظات اليمنية والخطوط الرئيسية ومدن السعودية والتاريخ
+class BusBookingScreen extends StatefulWidget {
   const BusBookingScreen({Key? key}) : super(key: key);
 
-  final List<String> yemeniGovernorates = const [
+  @override
+  State<BusBookingScreen> createState() => _BusBookingScreenState();
+}
+
+class _BusBookingScreenState extends State<BusBookingScreen> {
+  String? selectedFrom;
+  String? selectedTo;
+  DateTime selectedDate = DateTime.now();
+
+  final List<String> yemeniLocations = const [
     'صنعاء',
+    'معبر',
+    'رصابه',
+    'رداع',
+    'عفار',
+    'يريم',
     'عدن',
     'تعز',
     'الحديدة',
@@ -360,7 +377,7 @@ class BusBookingScreen extends StatelessWidget {
     'سقطرى',
     'مارب',
     'الجوف',
-    'بيضاء'
+    'البيضاء'
   ];
 
   final List<String> saudiCities = const [
@@ -386,57 +403,343 @@ class BusBookingScreen extends StatelessWidget {
     'الخرج'
   ];
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.amber,
+              onPrimary: Colors.black,
+              surface: Color(0xFF1E1E1E),
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _bookViaWhatsApp() async {
+    if (selectedFrom == null || selectedTo == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('الرجاء اختيار نقطة الانطلاق والوجهة المطلوبة')),
+      );
+      return;
+    }
+    final String dateStr = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في حجز رحلة برية/سيارات:\n- من: $selectedFrom\n- إلى: $selectedTo\n- تاريخ الرحلة: $dateStr");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String dateStr = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('النقل البري والسيارات والرحلات', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('اختر محطة الانطلاق (المحافظات والخطوط الرئيسية):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر نقطة الانطلاق', style: TextStyle(color: Colors.white54)),
+              value: selectedFrom,
+              items: yemeniLocations.map((loc) => DropdownMenuItem(value: loc, child: Text(loc))).toList(),
+              onChanged: (val) => setState(() => selectedFrom = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('اختر وجهة الوصول (مدن السعودية وباقي المناطق):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر الوجهة المطلوبة', style: TextStyle(color: Colors.white54)),
+              value: selectedTo,
+              items: [...yemeniLocations, ...saudiCities].map((loc) => DropdownMenuItem(value: loc, child: Text(loc))).toList(),
+              onChanged: (val) => setState(() => selectedTo = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('اختر تاريخ الرحلة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => _selectDate(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('تاريخ الرحلة: $dateStr', style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    const Icon(Icons.calendar_today, color: Colors.amber),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 35),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: _bookViaWhatsApp,
+                icon: const Icon(Icons.send),
+                label: const Text('إرسال طلب الحجز عبر الواتساب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 2. شاشة حجوزات الطيران (المطارات اليمنية + مدن السعودية ومسقط ودبي والدول)
+class FlightsScreen extends StatefulWidget {
+  const FlightsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FlightsScreen> createState() => _FlightsScreenState();
+}
+
+class _FlightsScreenState extends State<FlightsScreen> {
+  String? selectedAirport;
+  String? selectedDestination;
+
+  final List<String> yemeniAirports = const [
+    'مطار صنعاء الدولي',
+    'مطار عدن الدولي',
+    'مطار سيئون الدولي',
+    'مطار الريان الدولي بالمكلا',
+    'مطار الغيضة الدولي بالمهرة',
+    'مطار سقطرى الدولي',
+    'مطار تعز',
+    'مطار عتق بشبوة',
+    'مطار بيحان'
+  ];
+
+  final List<String> flightDestinations = const [
+    'المملكة العربية السعودية (جميع المدن)',
+    'سلطنة عمان (مسقط وباقي المدن)',
+    'دبي والإمارات العربية المتحدة',
+    'جمهورية مصر العربية (القاهرة)',
+    'المملكة الأردنية الهاشمية (عمان)',
+    'الهند',
+    'دول أخرى متاحة'
+  ];
+
+  Future<void> _bookFlightWhatsApp() async {
+    if (selectedAirport == null || selectedDestination == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('الرجاء اختيار مطار المغادرة ووجهة الوصول')),
+      );
+      return;
+    }
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في حجز تذكرة طيران:\n- من مطار: $selectedAirport\n- إلى وجهة: $selectedDestination");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('النقل البري والرحلات',
-            style: TextStyle(color: Colors.amber)),
+        title: const Text('حجوزات الطيران والمطارات', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('اختر مطار المغادرة في اليمن:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر المطار', style: TextStyle(color: Colors.white54)),
+              value: selectedAirport,
+              items: yemeniAirports.map((apt) => DropdownMenuItem(value: apt, child: Text(apt))).toList(),
+              onChanged: (val) => setState(() => selectedAirport = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('اختر وجهة الوصول المطلوبة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر الوجهة', style: TextStyle(color: Colors.white54)),
+              value: selectedDestination,
+              items: flightDestinations.map((dest) => DropdownMenuItem(value: dest, child: Text(dest))).toList(),
+              onChanged: (val) => setState(() => selectedDestination = val),
+            ),
+            const SizedBox(height: 35),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: _bookFlightWhatsApp,
+                icon: const Icon(Icons.send),
+                label: const Text('إرسال طلب حجز الطيران للواتساب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 3. شاشة جوازات السفر والبطاقات الإلكترونية
+class PassportsScreen extends StatelessWidget {
+  const PassportsScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String serviceName) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب خدمة: $serviceName");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('جوازات السفر والبطاقات الإلكترونية', style: TextStyle(color: Colors.amber)),
         iconTheme: const IconThemeData(color: Colors.amber),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('المحافظات اليمنية المتاحة للرحلات:',
-              style: TextStyle(
-                  color: Colors.amber,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          ...yemeniGovernorates.map((city) => Card(
+          ListTile(
+            tileColor: const Color(0xFF1E1E1E),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            leading: const Icon(Icons.book, color: Colors.amber),
+            title: const Text('استخراج جواز سفر جديد', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            subtitle: const Text('إجراءات سريعة وموثوقة', style: TextStyle(color: Colors.white70)),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
+            onTap: () => _openWhatsApp('استخراج جواز سفر جديد'),
+          ),
+          const SizedBox(height: 12),
+          ListTile(
+            tileColor: const Color(0xFF1E1E1E),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            leading: const Icon(Icons.update, color: Colors.amber),
+            title: const Text('تجديد جواز السفر', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            subtitle: const Text('تجديد وتمديد الصلاحية', style: TextStyle(color: Colors.white70)),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
+            onTap: () => _openWhatsApp('تجديد جواز السفر'),
+          ),
+          const SizedBox(height: 12),
+          ListTile(
+            tileColor: const Color(0xFF1E1E1E),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            leading: const Icon(Icons.credit_card, color: Colors.amber),
+            title: const Text('البطاقات الشخصية الإلكترونية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            subtitle: const Text('إصدار وتخليص البطاقات الشخصية', style: TextStyle(color: Colors.white70)),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
+            onTap: () => _openWhatsApp('استخراج البطاقة الشخصية الإلكترونية'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 4. قسم الموافقات الأمنية
+class SecurityApprovalsScreen extends StatelessWidget {
+  const SecurityApprovalsScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String country) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في الاستفسار أو طلب موافقة أمنية لدخول دولة: $country");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, String>> countries = [
+      {'name': 'جمهورية مصر العربية', 'desc': 'استخراج الموافقات الأمنية اللازمة لدخول مصر'},
+      {'name': 'دول أخرى تتطلب موافقات', 'desc': 'استفسر عن أي دولة تحتاج ترخيص أمني أو موافقة'},
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('قسم الموافقات الأمنية', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text(
+            'الدول التي تتطلب موافقات أمنية مسبقة للدخول:',
+            style: TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 15),
+          ...countries.map((c) => Card(
                 color: const Color(0xFF1E1E1E),
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
-                  leading: const Icon(Icons.location_on, color: Colors.amber),
-                  title: Text(city, style: const TextStyle(color: Colors.white)),
-                  trailing: const Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.white54),
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('تم اختيار الرحلة من/إلى: $city')),
-                    );
-                  },
-                ),
-              )),
-          const SizedBox(height: 20),
-          const Text('مدن المملكة العربية السعودية:',
-              style: TextStyle(
-                  color: Colors.amber,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          ...saudiCities.map((city) => Card(
-                color: const Color(0xFF1E1E1E),
-                child: ListTile(
-                  leading: const Icon(Icons.location_city, color: Colors.amber),
-                  title: Text(city, style: const TextStyle(color: Colors.white)),
-                  trailing: const Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.white54),
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('تم اختيار الوجهة في السعودية: $city')),
-                    );
-                  },
+                  leading: const Icon(Icons.verified_user, color: Colors.amber),
+                  title: Text(c['name']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  subtitle: Text(c['desc']!, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                  trailing: const Icon(Icons.chat, color: Colors.green),
+                  onTap: () => _openWhatsApp(c['name']!),
                 ),
               )),
         ],
@@ -445,54 +748,258 @@ class BusBookingScreen extends StatelessWidget {
   }
 }
 
-class FlightsScreen extends StatelessWidget {
-  const FlightsScreen({Key? key}) : super(key: key);
-
-  final List<String> yemeniAirports = const [
-    'مطار صنعاء الدولي (SAH)',
-    'مطار عدن الدولي (ADE)',
-    'مطار سيئون الدولي (GXF)',
-    'مطار الريان الدولي بالمكلا (RIY)',
-    'مطار الغيضة الدولي بالمهرة (AAY)',
-    'مطار سقطرى (SCT)',
-    'مطار تعز (TAI)',
-    'مطار عتق بشبوة (AXK)',
-    'مطار بيحان (BHN)'
-  ];
+// 5. أقسام التأشيرات الرئيسية
+class VisasMainScreen extends StatelessWidget {
+  const VisasMainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('حجوزات الطيران والمطارات',
-            style: TextStyle(color: Colors.amber)),
+        title: const Text('أقسام التأشيرات الشاملة', style: TextStyle(color: Colors.amber)),
         iconTheme: const IconThemeData(color: Colors.amber),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('المطارات اليمنية المعتمدة:',
-              style: TextStyle(
-                  color: Colors.amber,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          ...yemeniAirports.map((airport) => Card(
-                color: const Color(0xFF1E1E1E),
-                child: ListTile(
-                  leading: const Icon(Icons.flight_takeoff, color: Colors.amber),
-                  title:
-                      Text(airport, style: const TextStyle(color: Colors.white)),
-                  trailing: const Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.white54),
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('تم اختيار المطار: $airport')),
-                    );
-                  },
-                ),
-              )),
+          VisaCategoryTile(
+            title: 'أولاً: تأشيرات المملكة العربية السعودية',
+            icon: Icons.flag,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SaudiVisasScreen()));
+            },
+          ),
+          VisaCategoryTile(
+            title: 'ثانياً: تأشيرات سلطنة عمان',
+            icon: Icons.landscape,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const OmanVisasScreen()));
+            },
+          ),
+          VisaCategoryTile(
+            title: 'ثالثاً: تأشيرات سياحية حول العالم',
+            icon: Icons.public,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const WorldwideTourismVisasScreen()));
+            },
+          ),
+          VisaCategoryTile(
+            title: 'رابعاً: تأشيرات رجال الأعمال',
+            icon: Icons.business_center,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const BusinessVisasScreen()));
+            },
+          ),
+          VisaCategoryTile(
+            title: 'خامساً: التأشيرات العلاجية (الهند، الأردن، مصر وو...)',
+            icon: Icons.local_hospital,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MedicalVisasScreen()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VisaCategoryTile extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const VisaCategoryTile({Key? key, required this.title, required this.icon, required this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.amber.withOpacity(0.3)),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.amber),
+        title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+// تفاصيل تأشيرات السعودية
+class SaudiVisasScreen extends StatelessWidget {
+  const SaudiVisasScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String visaType) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب تأشيرة سعودية: $visaType");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> visas = [
+      'تأشيرات الحج والعمرة',
+      'تأشيرات الزيارة العائلية',
+      'تأشيرات العمل بأنواعها',
+      'تأشيرات السياحة',
+      'تأشيرات العلاج'
+    ];
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black, title: const Text('تأشيرات المملكة العربية السعودية', style: TextStyle(color: Colors.amber)), iconTheme: const IconThemeData(color: Colors.amber)),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: visas.map((v) => Card(
+          color: const Color(0xFF1E1E1E),
+          margin: const EdgeInsets.only(bottom: 10),
+          child: ListTile(
+            title: Text(v, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            trailing: const Icon(Icons.chat, color: Colors.green),
+            onTap: () => _openWhatsApp(v),
+          ),
+        )).toList(),
+      ),
+    );
+  }
+}
+
+// تفاصيل تأشيرات سلطنة عمان
+class OmanVisasScreen extends StatelessWidget {
+  const OmanVisasScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String visaType) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب تأشيرة سلطنة عمان: $visaType");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> visas = [
+      'تأشيرات استثمارية',
+      'تأشيرات عبور',
+      'تأشيرات سياحة',
+      'تأشيرات علاجية',
+      'جميع التأشيرات المتوفرة من اليمن إلى عمان'
+    ];
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black, title: const Text('تأشيرات سلطنة عمان', style: TextStyle(color: Colors.amber)), iconTheme: const IconThemeData(color: Colors.amber)),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: visas.map((v) => Card(
+          color: const Color(0xFF1E1E1E),
+          margin: const EdgeInsets.only(bottom: 10),
+          child: ListTile(
+            title: Text(v, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            trailing: const Icon(Icons.chat, color: Colors.green),
+            onTap: () => _openWhatsApp(v),
+          ),
+        )).toList(),
+      ),
+    );
+  }
+}
+
+// تأشيرات سياحية حول العالم
+class WorldwideTourismVisasScreen extends StatelessWidget {
+  const WorldwideTourismVisasScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String visaType) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في الاستفسار عن: $visaType");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black, title: const Text('تأشيرات سياحية حول العالم', style: TextStyle(color: Colors.amber)), iconTheme: const IconThemeData(color: Colors.amber)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const Text('نوفر خدمات التأشيرات السياحية لمختلف دول العالم بكل سهولة. تواصل معنا لتحديد الدولة المطلوبة.', style: TextStyle(color: Colors.white70, fontSize: 14)),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
+              onPressed: () => _openWhatsApp('تأشيرات سياحية حول العالم (استفسار عام)'),
+              icon: const Icon(Icons.chat),
+              label: const Text('تحديد الدولة وطلب التأشيرة عبر الواتساب'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// تأشيرات رجال الأعمال
+class BusinessVisasScreen extends StatelessWidget {
+  const BusinessVisasScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String visaType) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب تأشيرة رجال الأعمال: $visaType");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black, title: const Text('تأشيرات رجال الأعمال', style: TextStyle(color: Colors.amber)), iconTheme: const IconThemeData(color: Colors.amber)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const Text('خدمات خاصة لرجال الأعمال لتخليص وتأمين التأشيرات التجارية والمهنية بسرعة.', style: TextStyle(color: Colors.white70, fontSize: 14)),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.white),
+              onPressed: () => _openWhatsApp('تأشيرات رجال الأعمال'),
+              icon: const Icon(Icons.chat),
+              label: const Text('طلب تأشيرة رجال الأعمال عبر الواتساب'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// التأشيرات العلاجية والدول المتوفرة
+class MedicalVisasScreen extends StatelessWidget {
+  const MedicalVisasScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String country) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب تأشيرة وترتيبات علاجية إلى دولة: $country");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> countries = ['الهند', 'المملكة الأردنية الهاشمية', 'جمهورية مصر العربية', 'دول علاجية أخرى'];
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black, title: const Text('التأشيرات العلاجية والدول المتوفرة', style: TextStyle(color: Colors.amber)), iconTheme: const IconThemeData(color: Colors.amber)),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text('اختر دولة العلاج المطلوبة:', style: TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          ...countries.map((c) => Card(
+            color: const Color(0xFF1E1E1E),
+            margin: const EdgeInsets.only(bottom: 10),
+            child: ListTile(
+              leading: const Icon(Icons.local_hospital, color: Colors.amber),
+              title: Text(c, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              trailing: const Icon(Icons.chat, color: Colors.green),
+              onTap: () => _openWhatsApp(c),
+            ),
+          )),
         ],
       ),
     );
