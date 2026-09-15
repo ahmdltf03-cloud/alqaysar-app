@@ -29,15 +29,9 @@ class AlQaysarApp extends StatelessWidget {
   }
 }
 
-// شاشة الترحيب الفخمة
+// شاشة الترحيب الفخمة مع العنوان الصحيح
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
-
-  Future<void> _openWhatsApp(String serviceName) async {
-    final String message = Uri.encodeComponent("السلام عليكم، أرغب في الاستفسار عن خدمة: $serviceName");
-    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              // شعار القيصر (رمز تعبيري فخم يعبر عن الشعار)
+              // شعار القيصر
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
@@ -100,25 +94,42 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              // العنوان وأرقام التواصل في الواجهة الرئيسية لزيادة الثقة
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.location_on, color: Colors.amber, size: 18),
-                  SizedBox(width: 5),
-                  Text('الجمهورية اليمنية - خدمات متكاملة',
-                      style: TextStyle(color: Colors.white, fontSize: 13)),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.phone_in_talk, color: Colors.amber, size: 18),
-                  SizedBox(width: 5),
-                  Text('770169070 - 773606048',
-                      style: TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold)),
-                ],
+              // العنوان الصحيح تماماً كما طلبت
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.amber.withOpacity(0.2)),
+                ),
+                child: const Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.location_on, color: Colors.amber, size: 18),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            'المركز الرئيسي: الجمهورية اليمنية - محافظة حضرموت ـ المكلا ـ أربعين شقة',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.phone_in_talk, color: Colors.amber, size: 18),
+                        SizedBox(width: 5),
+                        Text('770169070 - 773606048',
+                            style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 25),
               SizedBox(
@@ -152,7 +163,7 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-// الشاشة الرئيسية للتطبيق وقائمة الخدمات
+// الشاشة الرئيسية للتطبيق وقائمة الخدمات الشاملة
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -244,7 +255,7 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const BusBookingScreen()),
+                      MaterialPageRoute(builder: (context) => const LandTransportSelectionScreen()),
                     );
                   },
                 ),
@@ -255,6 +266,16 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const FlightsScreen()),
+                    );
+                  },
+                ),
+                ServiceCard(
+                  title: 'تخليص المعاملات والشهادات',
+                  icon: Icons.assignment_turned_in,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const TransactionsScreen()),
                     );
                   },
                 ),
@@ -277,6 +298,11 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const VisasMainScreen()),
                     );
                   },
+                ),
+                ServiceCard(
+                  title: 'خدمات الحج والعمرة',
+                  icon: Icons.mosque,
+                  onTap: () => _openWhatsApp('خدمات الحج والعمرة المتكاملة'),
                 ),
               ],
             ),
@@ -329,7 +355,7 @@ class ServiceCard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -338,7 +364,76 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-// 1. شاشة النقل البري والسيارات مع المحافظات اليمنية والخطوط الرئيسية ومدن السعودية والتاريخ
+// شاشة اختيار قسم النقل البري (باصات أو سيارات حديثة)
+class LandTransportSelectionScreen extends StatelessWidget {
+  const LandTransportSelectionScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('النقل البري والسيارات والتسجيل', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'اختر نوع خدمة النقل المناسبة لك:',
+              style: TextStyle(color: Colors.amber, fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E1E1E),
+                foregroundColor: Colors.amber,
+                minimumSize: const Size(double.infinity, 65),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Colors.amber, width: 1.5),
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BusBookingScreen()),
+                );
+              },
+              icon: const Icon(Icons.directions_bus, size: 28),
+              label: const Text('حجز تذكرة سفر نقل بري (شركات الباصات)', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E1E1E),
+                foregroundColor: Colors.amber,
+                minimumSize: const Size(double.infinity, 65),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Colors.amber, width: 1.5),
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CarBookingScreen()),
+                );
+              },
+              icon: const Icon(Icons.car_rental, size: 28),
+              label: const Text('حجز تذكرة سفر عبر سيارة حديثة تشاركية', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 1. حجز تذكرة نقل بري (الباصات والشركات مع نوع عادي أو VIP) - محدثة بالأسماء الصحيحة
 class BusBookingScreen extends StatefulWidget {
   const BusBookingScreen({Key? key}) : super(key: key);
 
@@ -347,60 +442,43 @@ class BusBookingScreen extends StatefulWidget {
 }
 
 class _BusBookingScreenState extends State<BusBookingScreen> {
+  String? selectedCompany;
+  String serviceType = 'عادي';
   String? selectedFrom;
   String? selectedTo;
   DateTime selectedDate = DateTime.now();
 
+  final List<String> companies = const [
+    'البركة',
+    'المتصدر',
+    'تراحيب',
+    'الكاهلي',
+    'الأفضل',
+    'نجمة المسافر',
+    'رباء الحجاز',
+    'الصقور الناقله',
+    'النجار',
+    'البُراق',
+    'النور اكسبرس',
+    'العاديات السريعه',
+    'ترابط',
+    'زائر المشاعر',
+    'السراج / الامبراطور',
+    'قافلة الحجاز',
+    'النورس',
+    'سماء حراء',
+    'رواحل المشاعر'
+  ];
+
   final List<String> yemeniLocations = const [
-    'صنعاء',
-    'معبر',
-    'رصابه',
-    'رداع',
-    'عفار',
-    'يريم',
-    'عدن',
-    'تعز',
-    'الحديدة',
-    'إب',
-    'ذمار',
-    'صعدة',
-    'عمران',
-    'حجة',
-    'المحويت',
-    'ريمة',
-    'الضالع',
-    'لحج',
-    'أبين',
-    'شبوة',
-    'حضرموت',
-    'المهرة (الغيضة)',
-    'سقطرى',
-    'مارب',
-    'الجوف',
-    'البيضاء'
+    'صنعاء', 'معبر', 'رصابه', 'رداع', 'عفار', 'يريم', 'عدن', 'تعز', 'الحديدة',
+    'إب', 'ذمار', 'صعدة', 'عمران', 'حجة', 'المحويت', 'ريمة', 'الضالع', 'لحج',
+    'أبين', 'شبوة', 'حضرموت (المكلا)', 'المهرة (الغيضة)', 'سقطرى', 'مارب', 'الجوف', 'البيضاء'
   ];
 
   final List<String> saudiCities = const [
-    'الرياض',
-    'جدة',
-    'مكة المكرمة',
-    'المدينة المنورة',
-    'الدمام',
-    'الخبر',
-    'الطائف',
-    'تبوك',
-    'أبها',
-    'خميس مشيط',
-    'بريدة',
-    'حائل',
-    'نجران',
-    'جازان',
-    'الجبيل',
-    'ينبع',
-    'عرعر',
-    'سكاكا',
-    'الباحة',
-    'الخرج'
+    'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام', 'الخبر',
+    'الطائف', 'تبوك', 'أبها', 'خميس مشيط', 'بريدة', 'حائل', 'نجران', 'جازان'
   ];
 
   Future<void> _selectDate(BuildContext context) async {
@@ -431,14 +509,22 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
   }
 
   Future<void> _bookViaWhatsApp() async {
-    if (selectedFrom == null || selectedTo == null) {
+    if (selectedCompany == null || selectedFrom == null || selectedTo == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('الرجاء اختيار نقطة الانطلاق والوجهة المطلوبة')),
+        const SnackBar(content: Text('الرجاء اختيار الشركة، ونقطة الانطلاق، والوجهة المطلوبة')),
       );
       return;
     }
     final String dateStr = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-    final String message = Uri.encodeComponent("السلام عليكم، أرغب في حجز رحلة برية/سيارات:\n- من: $selectedFrom\n- إلى: $selectedTo\n- تاريخ الرحلة: $dateStr");
+    final String message = Uri.encodeComponent(
+        "السلام عليكم، أرغب في حجز تذكرة نقل بري (باصات):\n"
+        "- شركة الباصات: $selectedCompany\n"
+        "- نوع الخدمة: $serviceType\n"
+        "- من: $selectedFrom\n"
+        "- إلى: $selectedTo\n"
+        "- تاريخ الرحلة: $dateStr\n\n"
+        "يرجى إفادتنا بالسعر لتأكيد الحجز."
+    );
     final uri = Uri.parse("https://wa.me/967770169070?text=$message");
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
@@ -449,7 +535,7 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('النقل البري والسيارات والرحلات', style: TextStyle(color: Colors.amber)),
+        title: const Text('حجز تذكرة نقل بري (شركات الباصات)', style: TextStyle(color: Colors.amber)),
         iconTheme: const IconThemeData(color: Colors.amber),
       ),
       body: SingleChildScrollView(
@@ -457,7 +543,48 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('اختر محطة الانطلاق (المحافظات والخطوط الرئيسية):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const Text('اختر شركة النقل البري:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر الشركة', style: TextStyle(color: Colors.white54)),
+              value: selectedCompany,
+              items: companies.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              onChanged: (val) => setState(() => selectedCompany = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('اختر نوع الخدمة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('عادي', style: TextStyle(color: Colors.white)),
+                    value: 'عادي',
+                    groupValue: serviceType,
+                    activeColor: Colors.amber,
+                    onChanged: (val) => setState(() => serviceType = val!),
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('VIP', style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+                    value: 'VIP',
+                    groupValue: serviceType,
+                    activeColor: Colors.amber,
+                    onChanged: (val) => setState(() => serviceType = val!),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Text('نقطة الانطلاق (من):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               dropdownColor: const Color(0xFF1E1E1E),
@@ -473,7 +600,7 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
               onChanged: (val) => setState(() => selectedFrom = val),
             ),
             const SizedBox(height: 20),
-            const Text('اختر وجهة الوصول (مدن السعودية وباقي المناطق):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const Text('وجهة الوصول (إلى):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               dropdownColor: const Color(0xFF1E1E1E),
@@ -483,13 +610,13 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
                 fillColor: const Color(0xFF1E1E1E),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
-              hint: const Text('اختر الوجهة المطلوبة', style: TextStyle(color: Colors.white54)),
+              hint: const Text('اختر الوجهة', style: TextStyle(color: Colors.white54)),
               value: selectedTo,
               items: [...yemeniLocations, ...saudiCities].map((loc) => DropdownMenuItem(value: loc, child: Text(loc))).toList(),
               onChanged: (val) => setState(() => selectedTo = val),
             ),
             const SizedBox(height: 20),
-            const Text('اختر تاريخ الرحلة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const Text('تاريخ الرحلة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             InkWell(
               onTap: () => _selectDate(context),
@@ -521,7 +648,7 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
                 ),
                 onPressed: _bookViaWhatsApp,
                 icon: const Icon(Icons.send),
-                label: const Text('إرسال طلب الحجز عبر الواتساب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                label: const Text('إرسال طلب الحجز ومعرفة السعر للواتساب', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -531,7 +658,263 @@ class _BusBookingScreenState extends State<BusBookingScreen> {
   }
 }
 
-// 2. شاشة حجوزات الطيران (المطارات اليمنية + مدن السعودية ومسقط ودبي والدول)
+// 2. حجز سيارة حديثة تشاركية
+class CarBookingScreen extends StatefulWidget {
+  const CarBookingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CarBookingScreen> createState() => _CarBookingScreenState();
+}
+
+class _CarBookingScreenState extends State<CarBookingScreen> {
+  String? selectedCar;
+  String? selectedFrom;
+  String? selectedTo;
+  DateTime selectedDate = DateTime.now();
+
+  final List<String> cars = const [
+    'سيارة برادو',
+    'سيارة فورشنار',
+    'سيارة لكسز',
+    'سيارة صالون بصمة',
+    'سيارة هيلوكس',
+    'سيارة جمس',
+    'سيارة جيب',
+    'سيارة حديثة أخرى'
+  ];
+
+  final List<String> yemeniLocations = const [
+    'صنعاء', 'معبر', 'رصابه', 'رداع', 'عفار', 'يريم', 'عدن', 'تعز', 'الحديدة',
+    'إب', 'ذمار', 'صعدة', 'عمران', 'حجة', 'المحويت', 'ريمة', 'الضالع', 'لحج',
+    'أبين', 'شبوة', 'حضرموت (المكلا)', 'المهرة (الغيضة)', 'سقطرى', 'مارب', 'الجوف', 'البيضاء'
+  ];
+
+  final List<String> saudiCities = const [
+    'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام', 'الخبر',
+    'الطائف', 'تبوك', 'أبها', 'خميس مشيط', 'بريدة', 'حائل', 'نجران', 'جازان'
+  ];
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.amber,
+              onPrimary: Colors.black,
+              surface: Color(0xFF1E1E1E),
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _bookCarWhatsApp() async {
+    if (selectedCar == null || selectedFrom == null || selectedTo == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('الرجاء اختيار نوع السيارة، ونقطة الانطلاق، والوجهة المطلوبة')),
+      );
+      return;
+    }
+    final String dateStr = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    final String message = Uri.encodeComponent(
+        "السلام عليكم، أرغب في حجز سيارة حديثة تشاركية:\n"
+        "- نوع السيارة: $selectedCar\n"
+        "- من: $selectedFrom\n"
+        "- إلى: $selectedTo\n"
+        "- تاريخ الرحلة: $dateStr\n\n"
+        "ملاحظة: سيرسل العميل صورة الجواز PDF في هذه المحادثة لتأكيد الحجز.\n"
+        "يرجى إفادتنا بالسعر."
+    );
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String dateStr = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('حجز سيارة حديثة تشاركية', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('اختر نوع السيارة المطلوبة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر السيارة', style: TextStyle(color: Colors.white54)),
+              value: selectedCar,
+              items: cars.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+              onChanged: (val) => setState(() => selectedCar = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('نقطة الانطلاق (من):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر نقطة الانطلاق', style: TextStyle(color: Colors.white54)),
+              value: selectedFrom,
+              items: yemeniLocations.map((loc) => DropdownMenuItem(value: loc, child: Text(loc))).toList(),
+              onChanged: (val) => setState(() => selectedFrom = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('وجهة الوصول (إلى):', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              dropdownColor: const Color(0xFF1E1E1E),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              hint: const Text('اختر الوجهة', style: TextStyle(color: Colors.white54)),
+              value: selectedTo,
+              items: [...yemeniLocations, ...saudiCities].map((loc) => DropdownMenuItem(value: loc, child: Text(loc))).toList(),
+              onChanged: (val) => setState(() => selectedTo = val),
+            ),
+            const SizedBox(height: 20),
+            const Text('تاريخ الرحلة:', style: TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => _selectDate(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('تاريخ الرحلة: $dateStr', style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    const Icon(Icons.calendar_today, color: Colors.amber),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.amber.withOpacity(0.4)),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.info, color: Colors.amber),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'ملاحظة هامة: يرجى إرسال صورة الجواز بصيغة PDF في محادثة الواتساب لتأكيد الحجز.',
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: _bookCarWhatsApp,
+                icon: const Icon(Icons.send),
+                label: const Text('إرسال طلب الحجز للواتساب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// تخليص المعاملات وتعميد الشهادات
+class TransactionsScreen extends StatelessWidget {
+  const TransactionsScreen({Key? key}) : super(key: key);
+
+  Future<void> _openWhatsApp(String serviceName) async {
+    final String message = Uri.encodeComponent("السلام عليكم، أرغب في طلب خدمة: $serviceName");
+    final uri = Uri.parse("https://wa.me/967770169070?text=$message");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, String>> services = [
+      {'title': 'تعميد الشهادات الدراسية والجامعية', 'desc': 'تخليص وتعميد الشهادات من الجهات الرسمية'},
+      {'title': 'تخليص المعاملات الحكومية والرسمية', 'desc': 'إنجاز كافة المعاملات بدقة وسرعة'},
+      {'title': 'توثيق الأوراق والمستندات', 'desc': 'توثيق السفارات والخارجية والجهات المختصة'},
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('تخليص المعاملات وتعميد الشهادات', style: TextStyle(color: Colors.amber)),
+        iconTheme: const IconThemeData(color: Colors.amber),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text('اختر الخدمة المطلوبة للمتابعة عبر الواتساب:', style: TextStyle(color: Colors.amber, fontSize: 15, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 15),
+          ...services.map((s) => Card(
+                color: const Color(0xFF1E1E1E),
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                child: ListTile(
+                  leading: const Icon(Icons.verified, color: Colors.amber),
+                  title: Text(s['title']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  subtitle: Text(s['desc']!, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                  trailing: const Icon(Icons.chat, color: Colors.green),
+                  onTap: () => _openWhatsApp(s['title']!),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+// شاشة حجوزات الطيران
 class FlightsScreen extends StatefulWidget {
   const FlightsScreen({Key? key}) : super(key: key);
 
@@ -643,7 +1026,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
   }
 }
 
-// 3. شاشة جوازات السفر والبطاقات الإلكترونية
+// جوازات السفر والبطاقات الإلكترونية
 class PassportsScreen extends StatelessWidget {
   const PassportsScreen({Key? key}) : super(key: key);
 
@@ -699,7 +1082,7 @@ class PassportsScreen extends StatelessWidget {
   }
 }
 
-// 4. قسم الموافقات الأمنية
+// قسم الموافقات الأمنية
 class SecurityApprovalsScreen extends StatelessWidget {
   const SecurityApprovalsScreen({Key? key}) : super(key: key);
 
@@ -748,7 +1131,7 @@ class SecurityApprovalsScreen extends StatelessWidget {
   }
 }
 
-// 5. أقسام التأشيرات الرئيسية
+// أقسام التأشيرات الرئيسية
 class VisasMainScreen extends StatelessWidget {
   const VisasMainScreen({Key? key}) : super(key: key);
 
@@ -766,37 +1149,27 @@ class VisasMainScreen extends StatelessWidget {
           VisaCategoryTile(
             title: 'أولاً: تأشيرات المملكة العربية السعودية',
             icon: Icons.flag,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SaudiVisasScreen()));
-            },
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SaudiVisasScreen())),
           ),
           VisaCategoryTile(
             title: 'ثانياً: تأشيرات سلطنة عمان',
             icon: Icons.landscape,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const OmanVisasScreen()));
-            },
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const OmanVisasScreen())),
           ),
           VisaCategoryTile(
             title: 'ثالثاً: تأشيرات سياحية حول العالم',
             icon: Icons.public,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const WorldwideTourismVisasScreen()));
-            },
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WorldwideTourismVisasScreen())),
           ),
           VisaCategoryTile(
             title: 'رابعاً: تأشيرات رجال الأعمال',
             icon: Icons.business_center,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const BusinessVisasScreen()));
-            },
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BusinessVisasScreen())),
           ),
           VisaCategoryTile(
             title: 'خامساً: التأشيرات العلاجية (الهند، الأردن، مصر وو...)',
             icon: Icons.local_hospital,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MedicalVisasScreen()));
-            },
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MedicalVisasScreen())),
           ),
         ],
       ),
